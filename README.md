@@ -1,2 +1,2 @@
 # rover
-Repository for all software related to the rovers.
+A repository for all rover software.
