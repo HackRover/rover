@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title style="color:#303030;">Hackrover Mission Control</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffcc00;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        h1 {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 40px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        img {
+            border: 5px solid #ffcc00;
+            margin: 20px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            float: left;
+        }
+        #control-panel {
+            float: right;
+            margin: 20px;
+            padding: 10px;
+            background-color: #303030;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        button {
+            display: block;
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ffcc00;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hackrover Mission Control</h1>
+    </header>
+    <div id="control-panel">
+        <button id="forward">Forward</button>
+        <button id="backward">Backward</button>
+        <button id="left">Left</button>
+        <button id="right">Right</button>
+        <button id="stop">Stop</button>
+    </div>
+    <img src="{{ url_for('video_feed') }}" />
+    <script>
+        var buttons = document.querySelectorAll('button');
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var command = this.id;
+                fetch('/command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({command: command})
+                });
+            });
+        });
+    </script>
+</body>
+</html>
