@@ -20,9 +20,10 @@ double legPlatformRotationPoint[3] = {0, 0, 0};
 
 double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
 
-double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double l, double s, double servoArmXRotationOffset, double servoArmLength) {
+double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double s, double servoArmXRotationOffset, double servoArmLength) {
     double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
-    double L = pow(l, 2) - (pow(s, 2) - pow(servoArmXRotationOffset, 2));
+    double ln = pow(armLegJoint[0] - servoArmJoint[0]) + pow(armLegJoint[1] - servoArmJoint[1]) + pow(armLegJoint[2] - servoArmJoint[2], 2);
+    double L = ln - (pow(s, 2) - pow(servoArmXRotationOffset, 2));
     double M = 2 * a * (legPlatformJoint[2] - servoArmJoint[2]);
     double N = 2 * a * (cos(servoArmZRotationOffset[servo]) * (legPlatformJoint[0] - servoArmJoint[0]) + sin(servoArmZRotationOffset[servo]) * (legPlatformJoint[1] - servoArmJoint[1]));
     return(asin(L / sqrt(pow(M, 2) + pow(N, 2)) - atan(N / M)));
