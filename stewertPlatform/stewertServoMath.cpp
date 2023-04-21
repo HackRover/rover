@@ -29,13 +29,14 @@ double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(arm
 double fullRotationMatrix[3][3];
 
 void updateFullRotationMatrix(double x, double y, double z) {
-    
     double rotationMatrix[3][3] = {
         {cos(y) * cos(z), -1 * sin(z) * cos(x) + cos(z) * sin(y) * sin(x), sin(z) * sin(x) + cos(z) * sin(y) * cos(x)},
         {sin(z) * sin(y) * cos(z) - cos(x) * sin(z), cos(z) * cos(x) + sin(y) * sin(z) * sin(x), -1 * cos(z) * sin(x) + sin(y) * sin(z) * cos(x)},
         { -1 * sin(y), cos(y) * sin(x), cos(y) * cos(x)}
     };
 }
+
+void updateLegLength
 
 double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double s, double servoArmXRotationOffset, double servoArmLength) {
     double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
