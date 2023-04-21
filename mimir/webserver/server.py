@@ -3,12 +3,11 @@ import pyrealsense2.pyrealsense2 as rs
 import cv2
 import numpy as np
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Vector3
 
 app = Flask(__name__)
 
-if not rospy.get_node_uri():
-    rospy.init_node('hackrover_flask_{}'.format(rospy.get_time()), anonymous=True)
+rospy.init_node('hackroverFlask')
 
 def generate_frames():
     pipeline = rs.pipeline()
