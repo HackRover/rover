@@ -9,6 +9,10 @@ app = Flask(__name__)
 
 rospy.init_node('hackroverFlask')
 
+# Create a global variable to store the current command and status
+current_command = None
+current_status = 'Waiting for command'
+
 def generate_frames():
     pipeline = rs.pipeline()
     config = rs.config()
@@ -41,10 +45,12 @@ def video_feed():
 
 @app.route('/command', methods=['POST'])
 def command():
+    global current_command, current_status
+
     data = request.get_json()
     command = data['command']
 
-    # Create a ROS publisher for the twist message
+# Create a ROS publisher for the twist message
     pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
     # Create a Twist message based on the command
@@ -62,7 +68,30 @@ def command():
     # Publish the twist message to control the rover
     pub.publish(twist)
 
-    return jsonify({'status': 'success'})
+    # Set the current command to the new command and update the status
+    current_command = command
+    current_status = command + ' in progress'
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    # Create a JSON response indicating the status of the command
+    response = {'status': current_status}
+    return jsonify(response)
+
+# Create a ROS timer that updates the status message every 0.1 seconds
+def update_status(timer_event):
+    global current_command, current_status
+
+    if current_command is None:
+        current_status = 'Waiting for command'
+
+    # Update the status message in the HTML
+    script = f"document.getElementById('status-message').innerHTML = '{current_status}';"
+    script += "setTimeout(() => {document.getElementById('status-message').innerHTML = '';}, 2000);"
+    script += "console.log('" + current_status + "');"
+    script_tag = f"<script>{script}</script>"
+    response_html = f"<html>{script_tag}</html>"
+
+    # Send the updated HTML to the client
+    response = Response(response_html, content_type='text/html')
+    return response
+
+rospy.Timer(rospy.Duration(0.1), update_status) # Call update_status every 0.1 seconds
