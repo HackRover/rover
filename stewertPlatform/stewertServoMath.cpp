@@ -1,6 +1,6 @@
 //Using math from https://cdn.instructables.com/ORIG/FFI/8ZXW/I55MMY14/FFI8ZXWI55MMY14.pdf
-// Need to implament equation 1 and 3 from it
-#include <cmath>
+// Need to implament equation 3 from it
+#include <cmath.h>
 
 double platformBaseOffset;
 
@@ -8,11 +8,11 @@ double platformXRotation;
 double platformYRotation;
 double platformZRotation;
 
-double comLowVec = 3.22782990761707;
-double lowVectors[6] = {comLowVec, comLowVec, comLowVec, comLowVec, comLowVec, comLowVec};
+double lowVectorDistance = 3.22782990761707;
+double lowVector[3] = {0, 0, 0};
 
-double comHiVec = 3.57708764;
-double highVectors[6] = {comHiVec, comHiVec, comHiVec, comHiVec, comHiVec, comHiVec};
+double highVectorDistance = 3.57708764;
+double highVector[3] = {0, 0, 0};
 
 double servoArmLength;
 double legLength;
@@ -36,7 +36,15 @@ void updateFullRotationMatrix(double x, double y, double z) {
     };
 }
 
-void updateLegLength
+double funLegLength[6] = {0, 0, 0, 0, 0, 0};
+
+void updateLegLength(double rotMat[], double lowVec, double highVec, double transVec) {
+    double math[3] = {rotMat[0][0] * rotMat[0][1] * rotMat[0][2] + highVec[0], rotMat[1][0] * rotMat[1][1] * rotMat[1][2] + highVec[1], rotMat[2][0] * rotMat[2][1] * rotMat[2][2] + highVec[2]};
+    for (int i = 0; i < 3, i++) {
+        double math[i] = math[i] + transVec[i];
+    }
+    return(sqrt(pow(math[0] - lowVec[0], 2) + pow(math[1] - lowVec[1], 2) + pow(math[2] - lowVec[2], 2)));
+}
 
 double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double s, double servoArmXRotationOffset, double servoArmLength) {
     double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
