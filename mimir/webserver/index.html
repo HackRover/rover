@@ -3,6 +3,15 @@
 <head>
     <title style="color:#303030;">Hackrover Mission Control</title>
     <style>
+        .container {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+        }
+        .half {
+          width: 50%;
+          height: auto;
+        }
         body {
             background-color: #1e1e1e;
             color: #fff;
@@ -31,8 +40,8 @@
         }
         #control-panel {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 20%;
+            left: 10%;
             transform: translate(-50%, -50%);
             margin: 20px;
             padding: 10px;
@@ -57,8 +66,8 @@
         #status-message {
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
             margin: 0 auto;
             width: 200px;
             text-align: center;
@@ -67,35 +76,92 @@
             color: #ffcc00;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10%;
+            height: 20px;
+            border-radius: 5px;
+            background: #303030;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffcc00;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffcc00;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>
-    <header>
-        <h1>Hackrover Mission Control</h1>
-    </header>
-    <div id="control-panel">
-        <button id="forward">Forward</button>
-        <button id="backward">Backward</button>
-        <button id="left">Left</button>
-        <button id="right">Right</button>
-        <button id="stop">Stop</button>
-    </div>
-    <p id="status">Status: Waiting for command</p>
-    <img src="{{ url_for('video_feed') }}" />
-    <script>
-        var buttons = document.querySelectorAll('button');
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var command = this.id;
-                fetch('/command', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({command: command})
+    <body>
+        <header>
+            <h1>Hackrover Mission Control</h1>
+        </header>
+        <div id="control-panel">
+            <button id="forward">Forward</button>
+            <button id="backward">Backward</button>
+            <button id="left">Left</button>
+            <button id="right">Right</button>
+            <button id="stop">Stop</button>
+        </div>
+        <p id="status">Status: Waiting for command</p>
+        <div class="container">
+            <img class="half" id="camera-view" src="{{ url_for('video_feed') }}">
+            <img class="half" id="depth-view" src="{{ url_for('depth_feed') }}" style="display:none;">
+        </div>
+        <div class="container">
+            <input type="range" min="0" max="1" value="0" class="slider" id="view-toggle">
+        </div>
+        <script>
+            var buttons = document.querySelectorAll('button');
+            buttons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var command = this.id;
+                    fetch('/command', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({command: command})
+                    });
+                    document.querySelector('#status').textContent = 'Status: ' + command + ' in progress';
                 });
-                document.querySelector('#status').textContent = 'Status: ' + command + ' in progress';
             });
-        });
-    </script>
-</body
+            var cameraView = document.getElementById("camera-view");
+            var depthView = document.getElementById("depth-view");
+            var viewToggle = document.getElementById("view-toggle");
+            // Check if a slider value has been previously set and restore it if available
+            var sliderValue = localStorage.getItem("sliderValue");
+            if (sliderValue !== null) {
+                viewToggle.value = sliderValue;
+            }
+            function toggleView() {
+                if (viewToggle.value == 0) {
+                    cameraView.style.display = "block";
+                    depthView.style.display = "none";
+                } else {
+                    cameraView.style.display = "none";
+                    depthView.style.display = "block";
+                }
+
+                // Save the current slider value to local storage
+                localStorage.setItem("sliderValue", viewToggle.value);
+            }
+            viewToggle.oninput = toggleView;
+        </script>
+    </body>
+</html>
