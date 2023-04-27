@@ -1,6 +1,13 @@
 # rover
 A repository for all rover software.
 
+
+## Neccessary packages
+A list of packages neccessary to the rover:
+Download for ROS: [ros](http://wiki.ros.org/ROS/Installation)
+Script to download realsense on Jetson: [realsense jetson builder](https://github.com/35selim/RealSense-Jetson)
+
+
 ## Webserver
 Start with running 
 ```
