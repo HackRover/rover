@@ -39,15 +39,34 @@
             float: left;
         }
         #control-panel {
-            position: absolute;
-            top: 20%;
-            left: 10%;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 10%;
+            left: 5%;
             margin: 20px;
             padding: 10px;
             background-color: #303030;
             border-radius: 5px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        #status {
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        #distance-value {
+            position: fixed;
+            top: 7%;
+            left: 5%;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
         button {
             display: block;
@@ -62,19 +81,6 @@
             background-color: #ffcc00;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             cursor: pointer;
-        }
-        #status-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0 auto;
-            width: 200px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffcc00;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
         .slider {
             -webkit-appearance: none;
@@ -119,6 +125,7 @@
             <button id="stop">Stop</button>
         </div>
         <p id="status">Status: Waiting for command</p>
+        <p id="distance-value">Distance: N/A</p>
         <div class="container">
             <img class="half" id="camera-view" src="{{ url_for('video_feed') }}">
             <img class="half" id="depth-view" src="{{ url_for('depth_feed') }}" style="display:none;">
@@ -149,18 +156,37 @@
             if (sliderValue !== null) {
                 viewToggle.value = sliderValue;
             }
+            const distanceEventSource = new EventSource('/distance_feed');
+            distanceEventSource.onmessage = function (event) {
+                const distanceValue = parseFloat(event.data);
+                const distanceElement = document.getElementById('distance-value');
+                if (viewToggle.value == 1) { // Show the distance value only when the heatmap is selected
+                    distanceElement.innerText = `Distance: ${distanceValue.toFixed(2)} meters`;
+                } else {
+                    distanceElement.innerText = 'Distance: N/A'; // N/A Distance
+                }
+            };
+
+            // Modify the toggleView function to hide the distance value when not in heatmap view
             function toggleView() {
+                const distanceElement = document.getElementById('distance-value');
                 if (viewToggle.value == 0) {
                     cameraView.style.display = "block";
                     depthView.style.display = "none";
+                    distanceElement.innerText = 'Distance: N/A'; // N/A Distance
                 } else {
                     cameraView.style.display = "none";
                     depthView.style.display = "block";
+                    // Update the distance value when switching to heatmap view
+                    distanceElement.innerText = `Distance: ${(parseFloat(distanceEventSource.lastEventId) || 0).toFixed(2)} meters`;
                 }
 
                 // Save the current slider value to local storage
                 localStorage.setItem("sliderValue", viewToggle.value);
             }
+
+            toggleView();
+
             viewToggle.oninput = toggleView;
         </script>
     </body>
