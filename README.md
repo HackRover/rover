@@ -1,6 +1,15 @@
 # rover
 A repository for all rover software.
 
+
+## Neccessary packages
+A list of packages neccessary to the rover:
+
+Download for ROS: [ros](http://wiki.ros.org/ROS/Installation)
+
+Script to download realsense on Jetson: [realsense jetson builder](https://github.com/35selim/RealSense-Jetson)
+
+
 ## Webserver
 Start with running 
 ```
@@ -28,3 +37,9 @@ rostopic echo /cmd_vel
 ```
 Webserver folder contains the website that is hosted on the Jetson nano that displays the real time LIDAR view. 
 Run the shell script to launch the webserver.
+
+Real time live view of the LIDAR color video:
+![live view](https://github.com/HackRover/rover/blob/main/img/live%20view.png?raw=true)
+
+Real time live view of the LIDAR depth video:
+![heatmap view](https://github.com/HackRover/rover/blob/main/img/heatmap%20live%20view.png?raw=true)

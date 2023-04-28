@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response, request, jsonify
 import pyrealsense2.pyrealsense2 as rs
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 import rospy
 from geometry_msgs.msg import Twist, Vector3
@@ -12,24 +13,57 @@ rospy.init_node('hackroverFlask')
 # Create a global variable to store the current command and status
 current_command = None
 current_status = 'Waiting for command'
+pipeline = None
 
-def generate_frames():
+def start_pipeline():
+    global pipeline
     pipeline = rs.pipeline()
     config = rs.config()
     config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-
+    config.enable_stream(rs.stream.depth, 320, 240, rs.format.z16, 30)
     pipeline.start(config)
 
+def generate_color_frames():
+    global pipeline
     try:
         while True:
             frames = pipeline.wait_for_frames()
             color_frame = frames.get_color_frame()
             if not color_frame:
                 continue
-
-            frame = cv2.cvtColor(np.asanyarray(color_frame.get_data()), cv2.COLOR_BGR2RGB)
-            ret, buffer = cv2.imencode('.jpg', frame)
+            img = np.asanyarray(color_frame.get_data())
+            ret, buffer = cv2.imencode('.jpg', img, params=[cv2.IMWRITE_JPEG_QUALITY, 90, cv2.IMWRITE_JPEG_OPTIMIZE, 1])
             frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    finally:
+        pipeline.stop()
+
+def generate_depth_frames():
+    global pipeline
+    align = rs.align(rs.stream.color)
+    colorizer = rs.colorizer()
+    try:
+        while True:
+            frames = pipeline.wait_for_frames()
+            aligned_frames = align.process(frames)
+            colorized = colorizer.process(aligned_frames).as_frame()
+
+            depth_frame = aligned_frames.get_depth_frame()
+            if not depth_frame:
+                continue
+
+            # Convert depth frame to heatmap
+            heatmap = cv2.applyColorMap(cv2.convertScaleAbs(np.asanyarray(depth_frame.get_data()), alpha=0.03), cv2.COLORMAP_JET)
+
+            # Convert heatmap to RGB format
+            heatmap_rgb = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+
+
+            # Encode image as JPEG with optimization
+            ret, buffer = cv2.imencode('.jpg', heatmap_rgb, params=[cv2.IMWRITE_JPEG_QUALITY, 90, cv2.IMWRITE_JPEG_OPTIMIZE, 1])
+            frame = buffer.tobytes()
+
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
     finally:
@@ -41,7 +75,14 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(generate_color_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/depth_feed')
+def depth_feed():
+    return Response(generate_depth_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# start that pipeline
+start_pipeline()
 
 @app.route('/command', methods=['POST'])
 def command():
@@ -50,7 +91,7 @@ def command():
     data = request.get_json()
     command = data['command']
 
-# Create a ROS publisher for the twist message
+    # Create a ROS publisher for the twist message
     pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
     # Create a Twist message based on the command
@@ -76,7 +117,7 @@ def command():
     response = {'status': current_status}
     return jsonify(response)
 
-# Create a ROS timer that updates the status message every 0.1 seconds
+    # Create a ROS timer that updates the status message every 0.1 seconds
 def update_status(timer_event):
     global current_command, current_status
 
