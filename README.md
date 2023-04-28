@@ -42,4 +42,4 @@ Real time live view of the LIDAR color video:
 ![live view](https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20live%20view%20distance.png?raw=true)
 
 Real time live view of the LIDAR depth video:
-![heatmap view]https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20heatmap%20distance.png?raw=true)
+![heatmap view](https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20heatmap%20distance.png?raw=true)
