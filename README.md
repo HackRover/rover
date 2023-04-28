@@ -38,6 +38,8 @@ rostopic echo /cmd_vel
 Webserver folder contains the website that is hosted on the Jetson nano that displays the real time LIDAR view. 
 Run the shell script to launch the webserver.
 
+The website features a camera view (both real time color and LIDAR heatmap view), current command status, distance measurements (from heatmap only), and control panel to control the rover.
+
 Real time live view of the LIDAR color video:
 ![live view](https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20live%20view%20distance.png?raw=true)
 
