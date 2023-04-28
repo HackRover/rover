@@ -39,7 +39,7 @@ Webserver folder contains the website that is hosted on the Jetson nano that dis
 Run the shell script to launch the webserver.
 
 Real time live view of the LIDAR color video:
-![live view](https://github.com/HackRover/rover/blob/main/img/live%20view.png?raw=true)
+![live view](https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20live%20view%20distance.png?raw=true)
 
 Real time live view of the LIDAR depth video:
-![heatmap view](https://github.com/HackRover/rover/blob/main/img/heatmap%20live%20view.png?raw=true)
+![heatmap view]https://github.com/HackRover/rover/blob/main/img/%5B4-28-23%5D%20heatmap%20distance.png?raw=true)
