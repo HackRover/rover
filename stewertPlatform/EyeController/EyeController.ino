@@ -18,7 +18,7 @@ long stewartYaw;
 
 double platformBaseOffset[3] = {0, 0, 0};
 
-double platformXRotation = 0;
+double platformXRotation = 1;
 double platformYRotation = 0;
 double platformZRotation = 0;
 
@@ -35,15 +35,6 @@ double lowVector[6][3] = {
     {-3.7, 0.3, 0},
     {-2, 3, 0},
 };
-// double lowVector[6][3] = {
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0}
-// };
-
 
 double highVectorDistance = 3.57708764;
 double highVector[6][3] = {
@@ -54,14 +45,6 @@ double highVector[6][3] = {
     {-3.4, -1.5, 0},
      {-0.4, 3.7, 0},
 };
-// double highVector[6][3] = {
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0},
-//   {0,0,0}
-// };
 
 double translationVector[3] = {0, 0, 5.98632};
 // 5.98632
@@ -86,11 +69,6 @@ double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(arm
 double fullRotationMatrix[3][3];
 
 void updateFullRotationMatrix(double x, double y, double z) {
-  // fullRotationMatrix = {
-  //   {cos(y) * cos(z), -1 * sin(z) * cos(x) + cos(z) * sin(y) * sin(x), sin(z) * sin(x) + cos(z) * sin(y) * cos(x)},
-  //   {sin(z) * sin(y) * cos(z) - cos(x) * sin(z), cos(z) * cos(x) + sin(y) * sin(z) * sin(x), -1 * cos(z) * sin(x) + sin(y) * sin(z) * cos(x)},
-  //   { -1 * sin(y), cos(y) * sin(x), cos(y) * cos(x)}
-  // };
   fullRotationMatrix[0][0] = cos(y) * cos(z);
   fullRotationMatrix[0][1] = -1 * sin(z) * cos(x) + cos(z) * sin(y) * sin(x);
   fullRotationMatrix[0][2] = sin(z) * sin(x) + cos(z) * sin(y) * cos(x);
@@ -105,7 +83,7 @@ void updateFullRotationMatrix(double x, double y, double z) {
 double funLegLength[6] = {0, 0, 0, 0, 0, 0};
 
 double updateLegLength(double rotMat[][3], double lowVec[], double highVec[], double transVec[]) {
-  double mat[3] = {rotMat[0][0] * rotMat[0][1] * rotMat[0][2] + highVec[0], rotMat[1][0] * rotMat[1][1] * rotMat[1][2] + highVec[1], rotMat[2][0] * rotMat[2][1] * rotMat[2][2] + highVec[2]};
+  double mat[3] = {(rotMat[0][0] + rotMat[0][1] + rotMat[0][2]) * highVec[0], (rotMat[1][0] + rotMat[1][1] + rotMat[1][2]) * highVec[1], (rotMat[2][0] + rotMat[2][1] + rotMat[2][2]) * highVec[2]};
   for (int i = 0; i < 3; i++) {
       mat[i] = mat[i] + transVec[i];
   }
@@ -180,7 +158,7 @@ void setup() {
 
 void loop() {
 
-  stewertUpdateValue();
-  stewertServoUpdate();
+  // stewertUpdateValue();
+  // stewertServoUpdate();
 
 }
