@@ -1,6 +1,9 @@
 #include <Servo.h>
 #include <math.h>
 
+double degreesToRadians(double x);
+double radiansToDegrees(double x);
+
 Servo topWest;
 Servo topEast;
 Servo leftWest;
@@ -18,9 +21,9 @@ long stewartYaw;
 
 double platformBaseOffset[3] = {0, 0, 0};
 
-double platformXRotation = 1;
-double platformYRotation = 0;
-double platformZRotation = 0;
+double platformXRotation = degreesToRadians(10);
+double platformYRotation = degreesToRadians(0);
+double platformZRotation = degreesToRadians(0);
 
 double prevPlatformXRotation = 0;
 double prevPlatformYRotation = 0;
@@ -53,7 +56,6 @@ double legLength = 6;
 
 double servoArmXRotationOffset = 0;
 // double servoArmZRotationOffset[6] = {33.69, 86.31, 153.69, 206.31, 273.69, 326.31};
-double servoArmZRotationOffset[6] = {90, -90, 90, -90, 90, -90};
 
 double armLegJointPoint[3] = {1.225, 0.8, 0};
 double servoArmRotationPoint[3] = {0, 0, 0};
@@ -67,6 +69,17 @@ double rotationOffset = 0;
 double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
 
 double fullRotationMatrix[3][3];
+
+double degreesToRadians(double x) {
+  return(x * (3.14159265358979323846 / 180)); 
+}
+
+double radiansToDegrees(double x) {
+  return(x * (180 / 3.14159265358979323846)); 
+}
+
+double servoArmZRotationOffset[6] = {degreesToRadians(90), degreesToRadians(-90), degreesToRadians(90), degreesToRadians(-90), degreesToRadians(90), degreesToRadians(-90)};
+
 
 void updateFullRotationMatrix(double x, double y, double z) {
   fullRotationMatrix[0][0] = cos(y) * cos(z);
@@ -92,14 +105,15 @@ double updateLegLength(double rotMat[][3], double lowVec[], double highVec[], do
 
 double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double s, double servoArmXRotationOffset, double servoArmLength, double ln) {
     double a = sqrt(pow(armLegJointPoint[0] - servoArmRotationPoint[0], 2) + pow(armLegJointPoint[1] - servoArmRotationPoint[1], 2) + pow(armLegJointPoint[2] - servoArmRotationPoint[2], 2));
-    double L = pow(ln, 2) - (pow(s, 2) - pow(servoArmXRotationOffset, 2));
+    double L = pow(ln, 2) - (pow(s, 2) + pow(servoArmXRotationOffset, 2));
     double M = 2 * servoArmLength * (legPlatformJoint[2] - servoArmJoint[2]);
-    double N = 2 * servoArmLength * (cos(servoArmZRotationOffset[servo]) * (legPlatformJoint[0] - servoArmJoint[0]) + sin(servoArmZRotationOffset[servo]) * (legPlatformJoint[1] - servoArmJoint[1]));
+    double N = 2 * servoArmLength * (cos(servoArmZRotationOffset[servo] * (legPlatformJoint[0] - servoArmJoint[0])) + sin(servoArmZRotationOffset[servo] * (legPlatformJoint[1] - servoArmJoint[1])));
     Serial.println("69");
-    // Serial.println(L);
-    // Serial.println(M);
+    Serial.println(servo);
+    Serial.println(L);
+    Serial.println(M);
     Serial.println(N);
-    return(asin(L / sqrt(pow(M, 2) + pow(N, 2)) - atan(N / M)));
+    return(asin(L / sqrt(pow(M, 2) + pow(N, 2))) - atan(N / M));
 }
 
 void stewertUpdateValue() {
