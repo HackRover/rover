@@ -64,10 +64,16 @@ void updateFullRotationMatrix(double x, double y, double z) {
 double funLegLength[6] = {0, 0, 0, 0, 0, 0};
 
 void updateLegLength(double rotMat[], double lowVec, double highVec, double transVec) {
-    double math[3] = {rotMat[0][0] * rotMat[0][1] * rotMat[0][2] + highVec[0], rotMat[1][0] * rotMat[1][1] * rotMat[1][2] + highVec[1], rotMat[2][0] * rotMat[2][1] * rotMat[2][2] + highVec[2]};
+    double math[3] = {
+        rotMat[0][0] * highVec[0] + rotMat[0][1] * highVec[1] + rotMat[0][2] * highVec[2],
+        rotMat[1][0] * highVec[0] + rotMat[1][1] * highVec[1] + rotMat[1][2] * highVec[2],
+        rotMat[2][0] * highVec[0] + rotMat[2][1] * highVec[1] + rotMat[2][2] * highVec[2]
+    }
+    
     for (int i = 0; i < 3, i++) {
         double math[i] = math[i] + transVec[i];
     }
+
     return(sqrt(pow(math[0] - lowVec[0], 2) + pow(math[1] - lowVec[1], 2) + pow(math[2] - lowVec[2], 2)));
 }
 
