@@ -21,7 +21,7 @@ long stewartYaw;
 
 double platformBaseOffset[3] = {0, 0, 0};
 
-double platformXRotation = degreesToRadians(0);
+double platformXRotation = degreesToRadians(30);
 double platformYRotation = degreesToRadians(0);
 double platformZRotation = degreesToRadians(0);
 
@@ -49,7 +49,7 @@ double highVector[6][3] = {
      {-0.4, 3.7, 0},
 };
 
-double translationVector[3] = {0, 0, 5.98632};
+double translationVector[3] = {0, 0, 8.2};
 // 5.98632
 double servoArmLength = 1.2;
 double legLength = 7.8;
@@ -59,7 +59,7 @@ double servoArmXRotationOffset = 0;
 
 double armLegJointPoint[3] = {1.225, 0.8, 0};
 double servoArmRotationPoint[3] = {0, 0, 0};
-double legPlatformRotationPoint[3] = {1.301, -1.056, 5.98632};
+double legPlatformRotationPoint[3] = {1.301, 1.056, 8.2};
 
 int stewertServos[6] = {0, 0, 0, 0, 0, 0};
 double effectiveLegLength[6] = {0, 0, 0, 0, 0, 0};
@@ -78,7 +78,7 @@ double radiansToDegrees(double x) {
   return(x * (180 / 3.14159265358979323846)); 
 }
 
-double servoArmZRotationOffset[6] = {degreesToRadians(90), degreesToRadians(-90), degreesToRadians(90), degreesToRadians(-90), degreesToRadians(90), degreesToRadians(-90)};
+double servoArmZRotationOffset[6] = {0.578524214, 0.578524214, 0.578524214, 0.578524214, 0.578524214, 0.578524214};
 
 
 void updateFullRotationMatrix(double x, double y, double z) {
@@ -126,12 +126,12 @@ void stewertUpdateValue() {
 }
 
 void stewertServoUpdate() {
-  topWest.write(90 + radiansToDegrees(stewertServoRotation[0]));
-  topEast.write(90 - radiansToDegrees(stewertServoRotation[1]));
-  leftWest.write(90 + radiansToDegrees(stewertServoRotation[2]));
-  leftEast.write(90 - radiansToDegrees(stewertServoRotation[3]));
-  rightWest.write(90 + radiansToDegrees(stewertServoRotation[4]));
-  rightEast.write(90 - radiansToDegrees(stewertServoRotation[5]));
+  topWest.write( radiansToDegrees(stewertServoRotation[5]) * 1 + 90);
+  topEast.write(radiansToDegrees(stewertServoRotation[0]) * -1 + 90 );
+  leftWest.write(radiansToDegrees( stewertServoRotation[1]) * 1 + 90);
+  leftEast.write(radiansToDegrees(stewertServoRotation[2]) * -1 + 90);
+  rightWest.write(radiansToDegrees( stewertServoRotation[3]) * 1 + 90);
+  rightEast.write(radiansToDegrees(stewertServoRotation[4]) * -1 + 90);
 }
 
 void getPosition(bool test) {
@@ -156,9 +156,9 @@ void setup() {
   stewertUpdateValue();
   stewertServoUpdate();
 
-  testLine = stewertServoRotation[0];
-  Serial.println("345");
-  Serial.println(testLine);
+  // testLine = stewertServoRotation[0];
+  // Serial.println("345");
+  // Serial.println(testLine);
 
   for (int i = 0; i < 6; i ++) {
     testLine = radiansToDegrees(stewertServoRotation[i]);
@@ -171,7 +171,8 @@ void setup() {
 
 void loop() {
 
-  //stewertUpdateValue();
-  //stewertServoUpdate();
+  // Serial.print(9600);
+  // stewertUpdateValue();
+  // stewertServoUpdate();
 
 }
