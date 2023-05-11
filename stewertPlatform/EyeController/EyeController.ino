@@ -2,8 +2,7 @@
 //Goal with controlling a stewert platform with a camera
 //All calculations done in radians
 //HackRover 2023
-//Code done by: Raien Elliston
-//Second#9713
+//Code done by: Raien Elliston "Second"
 #include <Servo.h>
 #include <math.h>
 
@@ -29,6 +28,9 @@ Servo rightEast;
 bool test = true;
 bool updating = true;
 double testLine;
+
+//Declaring variable for getting translation vector
+double legTestValue[6];
 
 //Desired position and rotation of the platform
 long stewartRotationSpin;
@@ -67,6 +69,7 @@ double highVector[6][3] = {
 double translationVector[3] = {0, 0, 7};
 
 //servo arm and leg length
+//leg length needs remeasuring and to be fixed
 double servoArmLength = 1.2;
 double legLength = 7.8;
 
@@ -145,6 +148,16 @@ void stewertUpdateValue() {
       //Serial.println(stewertServoRotation[i]);
     }
 }
+
+//gets the translation vector for the height of the stewert platform
+//updates values based on it
+void getTranslationVector(double rotMat[][3], double lowVec[], double highVec[], double transVec[]) {
+  //test getLegLength without a translation value to get a defult value
+    
+  //
+
+}
+
 
 //updates the rotation being sent to the servos
 //needs to be in degrees
