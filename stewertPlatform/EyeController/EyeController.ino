@@ -15,7 +15,7 @@ double updateLegLength(double rotMat[][3], double lowVec[], double highVec[], do
 double stewertGetServoRotation(int servo, double armLegJoint[], double servoArmJoint[], double legPlatformJoint[], double s, double servoArmXRotationOffset, double servoArmLength, double ln);
 void stewertUpdateValue();
 void stewertServoUpdate();
-void getPosition(bool test);
+bool getPosition(bool test);
 
 //Servo object declaration
 Servo topWest;
@@ -28,6 +28,7 @@ Servo rightEast;
 //If testing variables. Keep updating true, only change test
 bool test = true;
 bool updating = true;
+double testLine;
 
 //Desired position and rotation of the platform
 long stewartRotationSpin;
@@ -158,13 +159,13 @@ void stewertServoUpdate() {
 }
 
 //gets the new position of the platform
-bool getPosition(bool test) {
+bool getPosition(bool is_test) {
   //runs update once to insure consol isn't spammed
-  if(running == false) {
+  if(updating == false) {
     return false;
   }
-  if(test == true) {
-    running = false;
+  if(is_test == true) {
+    updating = false;
   }
   //put code to get new posistion here
   return true;
