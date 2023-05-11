@@ -21,7 +21,7 @@ long stewartYaw;
 
 double platformBaseOffset[3] = {0, 0, 0};
 
-double platformXRotation = degreesToRadians(30);
+double platformXRotation = degreesToRadians(10);
 double platformYRotation = degreesToRadians(0);
 double platformZRotation = degreesToRadians(0);
 
@@ -49,7 +49,7 @@ double highVector[6][3] = {
      {-0.4, 3.7, 0},
 };
 
-double translationVector[3] = {0, 0, 8.2};
+double translationVector[3] = {0, 0, 7};
 // 5.98632
 double servoArmLength = 1.2;
 double legLength = 7.8;
@@ -96,7 +96,7 @@ void updateFullRotationMatrix(double x, double y, double z) {
 double funLegLength[6] = {0, 0, 0, 0, 0, 0};
 
 double updateLegLength(double rotMat[][3], double lowVec[], double highVec[], double transVec[]) {
-  double mat[3] = {(rotMat[0][0] * highVec[0]) + (rotMat[0][1] * highVec[1]) + (rotMat[0][2] * highVec[2]), (rotMat[1][0] * highVec[0]) + (rotMat[1][1] * highVec[1]) + (rotMat[1][2] * highVec[2]), (rotMat[2][0] * highVec[0]) + (rotMat[2][1] * highVec[1]) + (rotMat[2][2] * highVec[2}
+  double mat[3] = {(rotMat[0][0] * highVec[0]) + (rotMat[0][1] * highVec[1]) + (rotMat[0][2] * highVec[2]), (rotMat[1][0] * highVec[0]) + (rotMat[1][1] * highVec[1]) + (rotMat[1][2] * highVec[2]), (rotMat[2][0] * highVec[0]) + (rotMat[2][1] * highVec[1]) + (rotMat[2][2] * highVec[2])};
   for (int i = 0; i < 3; i++) {
       mat[i] = mat[i] + transVec[i];
   }
