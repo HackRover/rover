@@ -79,7 +79,7 @@ double servoArmZRotationOffset[6] = {0.578524214, 0.578524214, 0.578524214, 0.57
 //postition of all rotation points of the leg/arm reletive to it's connected servo
 double armLegJointPoint[3] = {1.225, 0.8, 0};
 double servoArmRotationPoint[3] = {0, 0, 0};
-double legPlatformRotationPoint[3] = {1.301, 1.056, 8.2};
+double legPlatformRotationPoint[3] = {1.301, 1.056, 7.8};
 
 //variables storing the effective leg length of each leg on the stewert platform and the rotation of the servo
 double effectiveLegLength[6] = {0, 0, 0, 0, 0, 0};
@@ -151,11 +151,11 @@ void stewertUpdateValue() {
 //inverting the numbers isn't needed, just makes it look nicer
 void stewertServoUpdate() {
   topWest.write( radiansToDegrees(stewertServoRotation[5]) * 1 + 90);
-  topEast.write(radiansToDegrees(stewertServoRotation[0]) * -1 + 90 );
+  topEast.write(radiansToDegrees(stewertServoRotation[0]) * 1 + 90 );
   leftWest.write(radiansToDegrees( stewertServoRotation[1]) * 1 + 90);
-  leftEast.write(radiansToDegrees(stewertServoRotation[2]) * -1 + 90);
+  leftEast.write(radiansToDegrees(stewertServoRotation[2]) * 1 + 90);
   rightWest.write(radiansToDegrees( stewertServoRotation[3]) * 1 + 90);
-  rightEast.write(radiansToDegrees(stewertServoRotation[4]) * -1 + 90);
+  rightEast.write(radiansToDegrees(stewertServoRotation[4]) * 1 + 90);
 }
 
 //gets the new position of the platform
@@ -183,6 +183,8 @@ void setup() {
   leftEast.attach(5);
   rightWest.attach(6);
   rightEast.attach(7);
+
+  stewertUpdateValue();
 
   //prints test numbers
   for (int i = 0; i < 6; i ++) {
