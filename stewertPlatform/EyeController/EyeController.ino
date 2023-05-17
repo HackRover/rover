@@ -42,44 +42,46 @@ double platformYRotation = degreesToRadians(0);
 double platformZRotation = degreesToRadians(0);
 
 //Lower vector and distance from the center of the platform to servos to servo arm rotation point
-double lowVectorDistance = 3.22782990761707;
+double lowVectorDistance = 2.7;
 double lowVector[6][3] = {
-    {2, 3, 0},
-    {3.7, 0.3, 0},
-    {1.6, -3.3, 0},
-    {-1.6, -3.3, 0},
-    {-3.7, 0.3, 0},
-    {-2, 3, 0},
+    {1.3, 2.3, 1.4},
+    {2.7, 0, 1.4},
+    {1.3, -2.3, 1.4},
+    {-1.3, -2.3, 1.4},
+    {-2.7, 0, 1.4},
+    {-1.3, 2.3, 1.4},
 };
 
 //Higher vector and distance from the center of the platform to leg rotation point
-double highVectorDistance = 3.57708764;
+double highVectorDistance = 2.154067;
 double highVector[6][3] = {
-    {0.4, 3.7, 0},
-    {3.4, -1.5, 0},
-    {3, -2.2, 0},
-    {-3, -2.2, 0},
-    {-3.4, -1.5, 0},
-     {-0.4, 3.7, 0},
+    {0.4, 2.1, 4.468745},
+    {2, -0.8, 4.468745},
+    {1.7, -1.4, 4.468745},
+    {-1.7, -1.4, 4.468745},
+    {-2, -0.8, 4.468745},
+    {-0.4, 2.1, 4.468745},
 };
 
 //Traslation vector; the offset of the high platform to the lower platform that stays constant
-double translationVector[3] = {0, 0, 7};
+double translationVector[3] = {0, 0, 4};
 
 //servo arm and leg length
+//leg length needs remeasuring and to be fixed
 double servoArmLength = 1.2;
-double legLength = 7.8;
+double legLength = 3.14;
 
 //vertical offset of the servo arms
 double servoArmXRotationOffset = 0;
 
 //rotational offset of the servo arms reletive to the servos itself
-double servoArmZRotationOffset[6] = {0.578524214, 0.578524214, 0.578524214, 0.578524214, 0.578524214, 0.578524214};
+//iteration 1
+double servoArmZRotationOffset[6] = {0.38051, 0.38051, 0.38051, 0.38051, 0.38051, 0.38051};
 
 //postition of all rotation points of the leg/arm reletive to it's connected servo
-double armLegJointPoint[3] = {1.225, 0.8, 0};
+double armLegJointPoint[3] = {1.2, 0.5, 0};
 double servoArmRotationPoint[3] = {0, 0, 0};
-double legPlatformRotationPoint[3] = {1.301, 1.056, 7.8};
+double legPlatformRotationPoint[3] = {1.035103, 0.0871, 3.068747};
 
 //variables storing the effective leg length of each leg on the stewert platform and the rotation of the servo
 double effectiveLegLength[6] = {0, 0, 0, 0, 0, 0};
