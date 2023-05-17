@@ -58,12 +58,12 @@ double lowVector[6][3] = {
 //Higher vector and distance from the center of the platform to leg rotation point
 double highVectorDistance = 3.57708764;
 double highVector[6][3] = {
-    {0.4, 2.1, 4.473495},
-    {2, -0.8, 4.473495},
-    {1.7, -1.4, 4.473495},
-    {-1.7, -1.4, 4.473495},
-    {-2, -0.8, 4.473495},
-    {-0.4, 2.1, 4.473495},
+    {0.4, 2.1, 4.468745},
+    {2, -0.8, 4.468745},
+    {1.7, -1.4, 4.468745},
+    {-1.7, -1.4, 4.468745},
+    {-2, -0.8, 4.468745},
+    {-0.4, 2.1, 4.468745},
 };
 
 //Traslation vector; the offset of the high platform to the lower platform that stays constant
@@ -79,12 +79,12 @@ double servoArmXRotationOffset = 0;
 
 //rotational offset of the servo arms reletive to the servos itself
 //iteration 1
-double servoArmZRotationOffset[6] = {0.416667, 0.416667, 0.416667, 0.416667, 0.416667, 0.416667};
+double servoArmZRotationOffset[6] = {0.38051, 0.38051, 0.38051, 0.38051, 0.38051, 0.38051};
 
 //postition of all rotation points of the leg/arm reletive to it's connected servo
 double armLegJointPoint[3] = {1.2, 0.5, 0};
 double servoArmRotationPoint[3] = {0, 0, 0};
-double legPlatformRotationPoint[3] = {0.3784, -0.9195, 3.073495}; //iteration 1
+double legPlatformRotationPoint[3] = {1.035103, 0.0871, 3.068747};
 
 //variables storing the effective leg length of each leg on the stewert platform and the rotation of the servo
 double effectiveLegLength[6] = {0, 0, 0, 0, 0, 0};
