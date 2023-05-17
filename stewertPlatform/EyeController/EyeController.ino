@@ -45,7 +45,7 @@ double platformYRotation = degreesToRadians(0);
 double platformZRotation = degreesToRadians(0);
 
 //Lower vector and distance from the center of the platform to servos to servo arm rotation point
-double lowVectorDistance = 3.22782990761707;
+double lowVectorDistance = 2.7;
 double lowVector[6][3] = {
     {1.3, 2.3, 1.4},
     {2.7, 0, 1.4},
@@ -56,7 +56,7 @@ double lowVector[6][3] = {
 };
 
 //Higher vector and distance from the center of the platform to leg rotation point
-double highVectorDistance = 3.57708764;
+double highVectorDistance = 2.154067;
 double highVector[6][3] = {
     {0.4, 2.1, 4.468745},
     {2, -0.8, 4.468745},
