@@ -13,3 +13,19 @@ Create a Python script for controlling the LED. You can use the RPi.GPIO library
 pip install RPi.GPIO
 ```
 Create a Python script, e.g., led_control.py inside your ROS package's src folder:
+
+Make sure to modify the ROS package's CMakeLists.txt and package.xml files to include the necessary dependencies and build instructions.
+
+Build your ROS package:
+```bash
+cd ~/catkin_ws
+catkin_make
+```
+Before running your ROS node, make sure you've connected everything to the right GPIO pins, with an appropriate resistor and power source.
+
+Run your ROS node:
+```bash
+rosrun your_package_name led_control.py
+```
+
+For the File 
