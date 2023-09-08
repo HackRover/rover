@@ -28,4 +28,9 @@ Run your ROS node:
 rosrun your_package_name led_control.py
 ```
 
-For the File 
+For the File TEST_led_contorl.py, some controls messages that can be used:
+```bash
+rostopic pub /led_control std_msgs/Bool "data: true"  # Turn on the LED
+rostopic pub /led_control std_msgs/Bool "data: false" # Turn off the LED
+```
+
