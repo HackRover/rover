@@ -1,4 +1,16 @@
 THIS IS TESTING ALL CODE HAVE NOT BE REALLY TO GO
+FIXME: Have not yet tested on the RSPI. I need some people who have RSPI that have ROS to run and tell me what error code.
+<h1><b>
+Welcome to ROS for RSPI contorl mortor
+</b></h1>
+This ROS package is designed for ROS noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
+When it runs it should be a Subscriber to the Publisher. 
+However, it also will be Publisher when it needs to send the state of the motor back to the higher level.
+
+
+
+Under the How to install we have used the example file TEST_led_contorl.py as an example.
+For TEST_led_contorl.py make sure you have an LED connected to Pin 12 on the RSPI
 
 How to install:
 Install ROS Noetic on your Raspberry Pi 3B+ if you haven't already. You can follow the official installation guide for Raspberry Pi: http://wiki.ros.org/noetic/Installation/Ubuntu
