@@ -1,1 +1,15 @@
 THIS IS TESTING ALL CODE HAVE NOT BE REALLY TO GO
+
+How to install:
+Install ROS Noetic on your Raspberry Pi 3B+ if you haven't already. You can follow the official installation guide for Raspberry Pi: http://wiki.ros.org/noetic/Installation/Ubuntu
+
+Create a ROS package (if you haven't already) for your LED control project. Replace your_package_name with your desired package name:
+```bash
+cd ~/catkin_ws/src
+catkin_create_pkg your_package_name rospy std_msgs
+```
+Create a Python script for controlling the LED. You can use the RPi.GPIO library to toggle GPIO pin 12. Install it if you haven't already:
+```python
+pip install RPi.GPIO
+```
+Create a Python script, e.g., led_control.py inside your ROS package's src folder:
