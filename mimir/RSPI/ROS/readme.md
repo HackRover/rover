@@ -8,7 +8,7 @@ When it runs it should be a Subscriber to the Publisher.
 However, it also will be Publisher when it needs to send the state of the motor back to the higher level.
 </p>
 
-
+<p>
 Under the How to install we have used the example file TEST_led_contorl.py as an example.
 For TEST_led_contorl.py make sure you have an LED connected to Pin 12 on the RSPI
 
@@ -46,4 +46,4 @@ For the File TEST_led_contorl.py, some controls messages that can be used:
 rostopic pub /led_control std_msgs/Bool "data: true"  # Turn on the LED
 rostopic pub /led_control std_msgs/Bool "data: false" # Turn off the LED
 ```
-
+</p>
