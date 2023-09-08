@@ -21,13 +21,25 @@ GPIO.setup(LED_PIN, GPIO.OUT)
 
 def led_control_callback(data):
     # Callback function to control the LED based on incoming messages
-    GPIO.output(LED_PIN, data.data)
+    new_state = data.data
+
+    # Set the LED state
+    GPIO.output(LED_PIN, new_state)
+
+    # Publish a message to confirm the LED state change
+    rospy.loginfo("LED state set to: %s", new_state)
+    led_state_pub.publish(new_state)
 
 def led_control_node():
+    global led_state_pub
     rospy.init_node('led_control_node', anonymous=True)
     
     # Subscribe to a topic to control the LED
     rospy.Subscriber('led_control', Bool, led_control_callback)
+
+    # Publish the initial LED state (assuming it's initially OFF)
+    led_state_pub = rospy.Publisher('led_state', Bool, queue_size=10)
+    led_state_pub.publish(False)
 
     rospy.spin()
 
