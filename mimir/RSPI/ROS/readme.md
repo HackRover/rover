@@ -1,6 +1,8 @@
+<p>
 THIS IS TESTING ALL CODE HAVE NOT BE REALLY TO GO
 FIXME: Have not yet tested on the RSPI. I need some people who have RSPI that have ROS to run and tell me what error code.
-<h1><b>
+FIXME: THE version so far I have written is in the TEST_PWM_RSPI.py However, using TEST_led_contorl.py to test the board will be the first thing to do so far.
+</p><h1><b>
 Welcome to ROS for RSPI contorl mortor
 </b></h1><p>
 This ROS package is designed for ROS noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
