@@ -17,10 +17,26 @@ from motor_control.msg import MotorSpeed  # Create a custom message type
 GPIO.setmode(GPIO.BCM)
 
 # Define the motor control pins
-# ... (same as in the previous code)
+MOTOR1_PWM_PIN = 18
+MOTOR1_DIR_PIN1 = 23
+MOTOR1_DIR_PIN2 = 24
+
+MOTOR2_PWM_PIN = 12
+MOTOR2_DIR_PIN1 = 20
+MOTOR2_DIR_PIN2 = 21
+
+# Initialize the GPIO pins
+GPIO.setup(MOTOR1_PWM_PIN, GPIO.OUT)
+GPIO.setup(MOTOR1_DIR_PIN1, GPIO.OUT)
+GPIO.setup(MOTOR1_DIR_PIN2, GPIO.OUT)
+
+GPIO.setup(MOTOR2_PWM_PIN, GPIO.OUT)
+GPIO.setup(MOTOR2_DIR_PIN1, GPIO.OUT)
+GPIO.setup(MOTOR2_DIR_PIN2, GPIO.OUT)
 
 # Create PWM objects for motors
-# ... (same as in the previous code)
+motor1_pwm = GPIO.PWM(MOTOR1_PWM_PIN, 1000)  # 1000 Hz frequency
+motor2_pwm = GPIO.PWM(MOTOR2_PWM_PIN, 1000)  # 1000 Hz frequency
 
 # Initialize the motor speeds
 current_motor1_speed = 0
