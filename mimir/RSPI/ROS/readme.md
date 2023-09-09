@@ -15,7 +15,7 @@ Under the How to install we have used the example file TEST_led_contorl.py as an
 For TEST_led_contorl.py make sure you have an LED connected to Pin 12 on the RSPI
 <b>
 How to install:
-</b>
+</b></p>
   Install ROS Noetic on your Raspberry Pi 3B+ if you haven't already. You can follow the official installation guide for Raspberry Pi: http://wiki.ros.org/noetic/Installation/Ubuntu
 
 Create a ROS package (if you haven't already) for your LED control project. Replace your_package_name with your desired package name:
@@ -49,4 +49,3 @@ For the File TEST_led_contorl.py, some controls messages that can be used:
 rostopic pub /led_control std_msgs/Bool "data: true"  # Turn on the LED
 rostopic pub /led_control std_msgs/Bool "data: false" # Turn off the LED
 ```
-</p>
