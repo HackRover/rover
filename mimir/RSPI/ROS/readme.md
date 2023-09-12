@@ -1,10 +1,10 @@
-![image info](supermeme_21h10_36.png)
 <p>
 THIS IS TESTING ALL CODE HAVE NOT BE REALLY TO GO
 FIXME: Have not yet tested on the RSPI. I need some people who have RSPI that have ROS to run and tell me what error code.
 FIXME: THE version so far I have written is in the TEST_PWM_RSPI.py However, using TEST_led_contorl.py to test the board will be the first thing to do so far.
 </p>
 
+![image info](supermeme_21h10_36.png)
 <h1><b>
 Welcome to ROS for RSPI contorl mortor
 </b></h1>
