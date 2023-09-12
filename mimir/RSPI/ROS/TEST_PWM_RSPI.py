@@ -16,7 +16,7 @@
 
 # OUTPUT Example:
 # [INFO] [1632772812.123456]: Motor speeds updated - Motor 1: 50%, Motor 2: -75%
-#  Type   ID                  Text about this        Current speed  Current speed
+#  Type          ID           Text about this       Current speed  Current speed
 #                               information          for Motor 1    for Motor 2
 
 
