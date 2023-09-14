@@ -11,8 +11,8 @@
 # To control the motors, you can publish messages to the motor_control topic with the std_msgs/Int16 message type.
 # Example:
 # rostopic pub /motor_control std_msgs/Int16 "data: [50, -75]"
-# 50: 50% of the speed forward
-# -75: 75% of the speed backward
+# 50: 50% of the speed in forward
+# -75: 75% of the speed in backward
 
 # OUTPUT Example:
 # [INFO] [1632772812.123456]: Motor speeds updated - Motor 1: 50%, Motor 2: -75%
