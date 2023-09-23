@@ -16,7 +16,7 @@ Modify: Long, Justin,
 
 Version 0.6.2
 <p>
-This ROS package is designed for ROS noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
+This ROS package is designed for ROS Noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
 When it runs it should be a Subscriber to the Publisher. 
 However, it also will be Publisher when it needs to send the state of the motor back to the higher level.
 The publisher needs to have an idea this the state of the motor is only the information tag [info] it will not count as the error or warning tag.
