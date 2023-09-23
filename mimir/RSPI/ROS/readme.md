@@ -10,11 +10,12 @@ If you want using the TEST_PWM_RSPI.py, plase follow this guildline to help you 
 ![image info](supermeme_21h10_36.png)
 <h1><b>
 Welcome to ROS for RSPI contorl mortor
-</b></h1>
+</b></h1><p>
 Created By: Houming Ge
 Modify: Long, Justin, 
 
-Version 0.6.2
+Version 0.6.
+</p>
 <p>
 This ROS package is designed for ROS Noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
 When it runs it should be a Subscriber to the Publisher. 
