@@ -1,3 +1,4 @@
+# DEBUG
 # Created By: Houming Ge
 # 2023/9/9
 #
@@ -19,7 +20,7 @@
 #  Type          ID           Text about this       Current speed  Current speed
 #                               information          for Motor 1    for Motor 2
 
-
+# Impotanting the library
 import rospy
 import RPi.GPIO as GPIO
 
@@ -30,6 +31,8 @@ from motor_control.msg import MotorSpeed  # Create a custom message type
 GPIO.setmode(GPIO.BCM)
 
 # Define the motor control pins
+# If your RBPI having Pins that have already using those pins
+# Please change them
 MOTOR1_PWM_PIN = 18
 MOTOR1_DIR_PIN1 = 23
 MOTOR1_DIR_PIN2 = 24
@@ -61,7 +64,9 @@ def motor_control_callback(data):
     motor1_speed = data.data[0]
     motor2_speed = data.data[1]
 
+    # TODO: need to be making sure this GPIO is output like that if the output is wrobng swide need adding in the desption
     # Set motor direction and speed using PWM duty cycle (0 to 100%)
+    # Motor 1 direction
     if motor1_speed >= 0:
         GPIO.output(MOTOR1_DIR_PIN1, GPIO.HIGH)
         GPIO.output(MOTOR1_DIR_PIN2, GPIO.LOW)
@@ -70,6 +75,7 @@ def motor_control_callback(data):
         GPIO.output(MOTOR1_DIR_PIN2, GPIO.HIGH)
     motor1_pwm.start(abs(motor1_speed))
 
+    # Motor 2 direction
     if motor2_speed >= 0:
         GPIO.output(MOTOR2_DIR_PIN1, GPIO.HIGH)
         GPIO.output(MOTOR2_DIR_PIN2, GPIO.LOW)
@@ -90,6 +96,7 @@ def motor_control_callback(data):
 
 def motor_control_node():
     global motor_speed_pub
+    # required to initing a node for the server on the nano to know this is a node.
     rospy.init_node('motor_control_node', anonymous=True)
 
     # Subscribe to a topic to control the motors
@@ -104,7 +111,11 @@ def motor_control_node():
 
     rospy.spin()
 
+# NO CHANGE 
+# This is the inition that need to send as this is also like main in C++
 if __name__ == '__main__':
+    # hecking
+
     try:
         motor_control_node()
     except rospy.ROSInterruptException:
