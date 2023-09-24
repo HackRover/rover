@@ -14,10 +14,10 @@ Welcome to ROS for RSPI contorl mortor
 </b></h1>
 </p>
 <p>
-Created By: Houming Ge
-Modify: Long, Justin, 
-
-Version 0.6.2
+ Created By: Houming Ge
+ Modify: Long, Justin, 
+ 
+ Version 0.6.2
 </p>
 <p>
 This ROS package is designed for ROS Noetic to control the motor when connected to Ubuntu 20.0.xx on RSPI.
