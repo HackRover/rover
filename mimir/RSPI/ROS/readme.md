@@ -29,17 +29,21 @@ However, it also will be Publisher when it needs to send the state of the motor 
 The publisher needs to have an idea this the state of the motor is only the information tag [info] it will not count as the error or warning tag.
 When the higher node send the speed contol for this Node. They need to follow the style that program is provide.
 </p>
-<br><br>
+<br>
 <p><h2>
 Writing
 </h2>
 Connect the IBT_2 F and R PWM pin to the PWM Pin that TEST_PWM_RSPI.py that has being signed.
+ 
 Connect the IBT_2 F IN pin to the FDir Pin that TEST_PWM_RSPI.py that has being signed.
-Connect the IBT_2 R IN pin to the RDir Pin that TEST_PWM_RSPI.py that has being signed.
-Connect the IBT_2 F and R EN pin to the GND. We are not going to it.
-Connect the IBT_2 5V Pin to the RBPI 5V Pin.
-Connect the IBT_2 GND Pin to the Comt GND, if their are not connect it to the RBPI any GND Pin.
 
+Connect the IBT_2 R IN pin to the RDir Pin that TEST_PWM_RSPI.py that has being signed.
+
+Connect the IBT_2 F and R EN pin to the GND. We are not going to it.
+
+Connect the IBT_2 5V Pin to the RBPI 5V Pin.
+
+Connect the IBT_2 GND Pin to the Comt GND, if their are not connect it to the RBPI any GND Pin.
 </p>
 
 <p>
@@ -49,6 +53,10 @@ For TEST_led_contorl.py make sure you have an LED connected to Pin 12 on the RSP
 <b>How to install:
 </b></h2></p>
 Install ROS Noetic on your Raspberry Pi 3B+ if you haven't already. You can follow the official installation guide for Raspberry Pi: http://wiki.ros.org/noetic/Installation/Ubuntu
+---------------------
+Because the ROS Noetic website is out of date. Please follow this guide for Raspberry Pi:
+
+https://docs.google.com/document/d/1gyOpWGFm9_IUQVTmd94F3PB0bu6d0COShgGZpof6Luc/edit#heading=h.bnwaaeqj943o
 
 Create a ROS package (if you haven't already) for your LED control project. Replace your_package_name with your desired package name:
 ```bash
