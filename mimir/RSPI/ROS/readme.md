@@ -53,7 +53,9 @@ For TEST_led_contorl.py make sure you have an LED connected to Pin 12 on the RSP
 <b>How to install:
 </b></h2></p>
 Install ROS Noetic on your Raspberry Pi 3B+ if you haven't already. You can follow the official installation guide for Raspberry Pi: http://wiki.ros.org/noetic/Installation/Ubuntu
+
 ---------------------
+
 Because the ROS Noetic website is out of date. Please follow this guide for Raspberry Pi:
 
 https://docs.google.com/document/d/1gyOpWGFm9_IUQVTmd94F3PB0bu6d0COShgGZpof6Luc/edit#heading=h.bnwaaeqj943o
