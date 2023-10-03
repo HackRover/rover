@@ -5,8 +5,6 @@
 # This is still in progress of testing
 # Not the final version
 # Verison: 0.2.3
-# 
-#!/usr/bin/env python
 
 # How to use:
 # To control the motors, you can publish messages to the motor_control topic with the std_msgs/Int16 message type.
@@ -20,6 +18,7 @@
 #  Type          ID           Text about this       Current speed  Current speed
 #                               information          for Motor 1    for Motor 2
 
+#!/usr/bin/env python
 # Impotanting the library
 import rospy
 import RPi.GPIO as GPIO
@@ -31,7 +30,7 @@ from motor_control.msg import MotorSpeed  # Create a custom message type
 GPIO.setmode(GPIO.BCM)
 
 # Define the motor control pins
-# If your RBPI having Pins that have already using those pins
+# If your RBPI having Pins that have already using
 # Please change them
 MOTOR1_PWM_PIN = 18
 MOTOR1_DIR_PIN1 = 23
@@ -55,6 +54,7 @@ motor1_pwm = GPIO.PWM(MOTOR1_PWM_PIN, 1000)  # 1000 Hz frequency
 motor2_pwm = GPIO.PWM(MOTOR2_PWM_PIN, 1000)  # 1000 Hz frequency
 
 # Initialize the motor speeds
+# The motor speeds should be zero at the Initialize
 current_motor1_speed = 0
 current_motor2_speed = 0
 
@@ -115,7 +115,9 @@ def motor_control_node():
 # This is the inition that need to send as this is also like main in C++
 if __name__ == '__main__':
     # hecking
-
+    # Debug the node at the main node when it waws in the debug mode.
+    # If the node can not taking any message, Checking the connect between Nano and RBPI.
+    # If the node is return the error checking the input of the sppe IT was Not 128
     try:
         motor_control_node()
     except rospy.ROSInterruptException:
