@@ -19,6 +19,7 @@ GPIO.setmode(GPIO.BCM)
 # Define the LED GPIO pin
 # If your RBPI having already using this Pin
 # Please change
+# Same Mean as GPIO 1
 LED_PIN = 12
 
 # Initialize the GPIO pin as an output
