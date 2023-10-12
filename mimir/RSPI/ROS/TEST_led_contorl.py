@@ -5,6 +5,8 @@
 # 
 #!/usr/bin/env python
 
+# THis is still in debug. THis file is a testing code when you need to using this code. You need to folllow the README.md file to seeting on the system setting.
+
 # importanting the library
 import rospy
 import RPi.GPIO as GPIO
