@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 
+# importaing the GPIO as the PBPI for 3B+ and 4 or higher
 import RPi.GPIO as GPIO
 import rospy
 
 from std_msgs.msg import String, Float64
 
+# Testing funcation
+# return 'HI' as the respond for the call
 def hello_callback(data):
     if data.data == "hello":
-        pub.publish("hi")
-
+        pub.publish("HI")
+# Led Pin Testing funcation
+# THis is only workijng if you have connect the Led to the GPIO 1 And connect other end to GND
 def light_callback(data):
     if data.data == "on":
         GPIO.setmode(GPIO.BCM)
