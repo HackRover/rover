@@ -2,7 +2,7 @@
 IBT-2 Motor Control Board driven by Arduino.
 Created By Houming Ge for HackRover
 
-Speed and direction controlled by a potentiometer attached to analog input 0.
+Speed and direction are controlled by a potentiometer attached to analog input 0.
 One side pin of the potentiometer (either one) to ground; the other side pin to +5V
 
 Connection to the IBT-2 board:
@@ -12,13 +12,34 @@ IBT-2 pins 3 (R_EN), 4 (L_EN), 7 (VCC) to Arduino 5V pin
 IBT-2 pin 8 (GND) to Arduino GND
 IBT-2 pins 5 (R_IS) and 6 (L_IS) not connected
 
-If change the Pin connect, Change the Those Value as it was respond to:
+If you change the Pin connect, Change the Those Value as it was responding to:
     Motor1_RPWM , Motor1_FRPM , Motor2_RPWM , Motor2_FRPM
 
-Those Pin Should Support the analogWrite function to be able to control the speed of the mortor
+Those Pin Should Support the analogWrite function to be able to control the speed of the motor
 
-If the DEBUG LED Pin change, it need to be support dig
+If the DEBUG LED Pin change, it needs to be supported dig
 */
+
+/**
+ * Command type:
+ *
+ * status :
+ * Getting the information for both motors for their speed and direction
+ *
+ *
+ * speedXXXXX :
+ * Setting a speed for one motor for the speed it needs to be resigned to
+ * The examples for the speed type of command are:
+ * speed0-100 - meaning that motor 1 set the speed to -100 % of the motor output in the reverse direction
+ *
+ * speed112 - meaning that motor 2 sets the speed to 12 % of the motor output in the forward direction
+ *
+ * Error example:
+ * //TODO: adding the conver to product the error input from the user
+ * speed1-1333 meaning that the motor 2 should be signed to the speed of 1333 % however the MAX value is only limited to 100
+ * This will cause the invalid command been returned
+ *
+ */
 
 /**
  * For Furture Coder:
