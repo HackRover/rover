@@ -126,7 +126,7 @@ void loop()
   else if (inputString.startsWith("speed"))
   {
     inputString.remove(0, 5);
-    inputString.remove(inputString.length() - 1);
+    inputString.remove(inputString.length());
 
     // Checking if the Motor speed and the select is in the digit format
     // It can chekcing if the motor is in the negivte value
