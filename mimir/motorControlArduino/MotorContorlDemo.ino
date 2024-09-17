@@ -1,4 +1,3 @@
-
 /*
 IBT-2 Motor Control Board driven by Arduino.
 Created By Houming Ge for HackRover
@@ -122,6 +121,46 @@ void loop()
   if (inputString.startsWith("status"))
   {
     sSpeedInfo();
+  }
+  else if (inputString.startsWith("w")){
+    analogWrite(Motor1_RPWM, 0);
+    analogWrite(Motor1_FRPM, 100);
+    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor2_RPWM, 100);
+    sSpeedInfo();
+
+  }
+  else if (inputString.startsWith("s")){
+    analogWrite(Motor1_FRPM, 0);
+    analogWrite(Motor1_RPWM, 100);
+    analogWrite(Motor2_RPWM, 0);
+    analogWrite(Motor2_FRPM, 100);
+    sSpeedInfo();
+
+  }
+  else if (inputString.startsWith("a")){
+    analogWrite(Motor1_RPWM, 0);
+    analogWrite(Motor1_FRPM, -100);
+    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor2_RPWM, 80);
+    sSpeedInfo();
+
+  }
+  else if (inputString.startsWith("d")){
+    analogWrite(Motor1_RPWM, 0);
+    analogWrite(Motor1_FRPM, 80);
+    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor2_RPWM, -100);
+    sSpeedInfo();
+
+  }
+  else if (inputString.startsWith("x")){
+    analogWrite(Motor1_RPWM, 0);
+    analogWrite(Motor1_FRPM, 0);
+    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor2_RPWM, 0);
+    sSpeedInfo();
+
   }
   // Gettng speed from the command "speed"
   else if (inputString.startsWith("speed"))
