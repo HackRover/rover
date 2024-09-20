@@ -55,10 +55,10 @@ If the DEBUG LED Pin change, it needs to be supported dig
 // #include <ThreadController.h>
 
 static int Motor1_RPWM = 5;
-static int Motor1_FRPM = 6;
+static int Motor1_FPWM = 6;
 
 static int Motor2_RPWM = 9;
-static int Motor2_FRPM = 10;
+static int Motor2_FPWM = 10;
 
 // Defult Build In LED On the MOST ARDUNO BOARD / ESP32
 static uint8_t ledPin = LED_BUILTIN;
@@ -124,40 +124,48 @@ void loop()
   }
   else if (inputString.startsWith("w")){
     analogWrite(Motor1_RPWM, 0);
-    analogWrite(Motor1_FRPM, 100);
-    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor1_FPWM, 100);
+    analogWrite(Motor2_FPWM, 0);
     analogWrite(Motor2_RPWM, 100);
+    motor1S = 100;
+    motor2S = 100;
     sSpeedInfo();
 
   }
   else if (inputString.startsWith("s")){
-    analogWrite(Motor1_FRPM, 0);
+    analogWrite(Motor1_FPWM, 0);
     analogWrite(Motor1_RPWM, 100);
     analogWrite(Motor2_RPWM, 0);
-    analogWrite(Motor2_FRPM, 100);
+    analogWrite(Motor2_FPWM, 100);
+    motor1S = -100;
+    motor2S = -100;
     sSpeedInfo();
 
   }
   else if (inputString.startsWith("a")){
     analogWrite(Motor1_RPWM, 0);
-    analogWrite(Motor1_FRPM, -100);
-    analogWrite(Motor2_FRPM, 0);
-    analogWrite(Motor2_RPWM, 80);
+    analogWrite(Motor1_FPWM, 100);
+    analogWrite(Motor2_FPWM, 0);
+    analogWrite(Motor2_RPWM, 50);
+    motor1S = 100;
+    motor2S = 50;
     sSpeedInfo();
 
   }
   else if (inputString.startsWith("d")){
     analogWrite(Motor1_RPWM, 0);
-    analogWrite(Motor1_FRPM, 80);
-    analogWrite(Motor2_FRPM, 0);
-    analogWrite(Motor2_RPWM, -100);
+    analogWrite(Motor1_FPWM, 50);
+    analogWrite(Motor2_FPWM, 0);
+    analogWrite(Motor2_RPWM, 100);
+    motor1S = 50;
+    motor2S = 100;
     sSpeedInfo();
 
   }
   else if (inputString.startsWith("x")){
     analogWrite(Motor1_RPWM, 0);
-    analogWrite(Motor1_FRPM, 0);
-    analogWrite(Motor2_FRPM, 0);
+    analogWrite(Motor1_FPWM, 0);
+    analogWrite(Motor2_FPWM, 0);
     analogWrite(Motor2_RPWM, 0);
     sSpeedInfo();
 
@@ -183,12 +191,12 @@ void loop()
         // Motor 1 contorl speed from the RBPI to the setting the PWM signal
         // forward rotation
         analogWrite(Motor1_RPWM, 0);
-        analogWrite(Motor1_FRPM, abs(motor1S));
+        analogWrite(Motor1_FPWM, abs(motor1S));
 
         // reverse rotation
         if (motor1S < 0)
         {
-          analogWrite(Motor1_FRPM, 0);
+          analogWrite(Motor1_FPWM, 0);
           analogWrite(Motor1_RPWM, abs(motor1S));
         }
       }
@@ -201,14 +209,14 @@ void loop()
 
         // Motor 2 contorl speed from the RBPI to the setting the PWM signal
         // forward rotation
-        analogWrite(Motor2_FRPM, 0);
+        analogWrite(Motor2_FPWM, 0);
         analogWrite(Motor2_RPWM, abs(motor2S));
 
         // reverse rotation
         if (motor2S < 0)
         {
           analogWrite(Motor2_RPWM, 0);
-          analogWrite(Motor2_FRPM, abs(motor2S));
+          analogWrite(Motor2_FPWM, abs(motor2S));
         }
       }
       // If they are not both Return the ERROR
