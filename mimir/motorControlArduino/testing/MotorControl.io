@@ -1,26 +1,25 @@
 /*
-IBT-2 Motor Control Board driven by Arduino.
-Created By Houming Ge for HackRover
-
-Speed and direction are controlled by a potentiometer attached to analog input 0.
-One side pin of the potentiometer (either one) to ground; the other side pin to +5V
-
-Connection to the IBT-2 board:
-IBT-2 pin 1 (RPWM) to Arduino pin 5(PWM)
-IBT-2 pin 2 (LPWM) to Arduino pin 6(PWM)
-IBT-2 pins 3 (R_EN), 4 (L_EN), 7 (VCC) to Arduino 5V pin
-IBT-2 pin 8 (GND) to Arduino GND
-IBT-2 pins 5 (R_IS) and 6 (L_IS) not connected
-
-If you change the Pin connect, Change the Those Value as it was responding to:
-    Motor1_RPWM , Motor1_FRPM , Motor2_RPWM , Motor2_FRPM
-
-Those Pin Should Support the analogWrite function to be able to control the speed of the motor
-
-If the DEBUG LED Pin change, it needs to be supported dig
-*/
-
-/**
+ * IBT-2 Motor Control Board driven by Arduino.
+ * Created By Houming Ge for HackRover
+ * Speed and direction are controlled by a potentiometer attached to analog input 0.
+ * One side pin of the potentiometer (either one) to ground; the other side pin to +5V
+ * 
+ * Connection to the IBT-2 board:
+ * IBT-2 pin 1 (RPWM) to Arduino pin 5(PWM)
+ * IBT-2 pin 2 (LPWM) to Arduino pin 6(PWM)
+ * IBT-2 pins 3 (R_EN), 4 (L_EN), 7 (VCC) to Arduino 5V pin
+ * IBT-2 pin 8 (GND) to Arduino GND
+ * IBT-2 pins 5 (R_IS) and 6 (L_IS) not connected
+ * 
+ * If you change the Pin connect, Change the Those Value as it was responding to:
+ *     Motor1_RPWM_Pin , Motor1_FRPM_Pin , Motor2_RPWM_Pin , Motor2_FRPM_Pin
+ *     Motor1_RPWM_Digital , Motor1_FPWM_Digital , Motor2_RPWM_Digital , Motor2_FPWM_Digital
+ * 
+ * Those Pin Should Support the analogWrite function to be able to control the speed of the motor
+ * 
+ * If the DEBUG LED Pin changes, it needs to be supported digitally Only
+ * 
+ * 
  * Command type:
  *
  * status :
@@ -34,53 +33,64 @@ If the DEBUG LED Pin change, it needs to be supported dig
  *
  * speed112 - meaning that motor 2 sets the speed to 12 % of the motor output in the forward direction
  *
- * Error example:
+ * Error Code:
+ * 0 - Stand for the nothing that will be shown when the command is executed successfully
+ * 1 - Serial Port has not connect 
+ * 2 - Can not read which type of command from the serial read
+ * 3 - Motor speed is not able to be read correctly
+ * 
+ * 
  * //TODO: adding the conver to product the error input from the user
- * speed1-1333 meaning that the motor 2 should be signed to the speed of 1333 % however the MAX value is only limited to 100
- * This will cause the invalid command been returned
+ * speed1-1333 meaning that motor 2 should be signed to the speed of 1333 % however the MAX value is only limited to 100
+ * This will cause the invalid command to be returned
+ * //TODO:The  Cover should have a value sign it to help the work in future change motor in
  *
  */
+#include <Arduino.h>
 
 /**
- * For Furture Coder:
- * method stander 
- *  sName: Serial Name - meanign the method will call the Serial class
+ * For Future Coder:
+ * method stander
+ *  sName: Serial Name - meaning the method will call the Serial class
+ *
+ * //TODO: Adding a random move for the cyber people to use
+ * // TODO: NEED to add the random move?
  */
 
+#define Serial_Speed 9600
 
-// TODO: Adding a map conver to conver the 0-100 to 0-255 base on the rated of cover
-// TODO: Adding a random move for the cyber people to use
-#include <Arduino.h>
-// #include <Thread.h>
-// #include <ThreadController.h>
+#define Motor1_RPWM_Digital false
+#define Motor1_RPWM_Pin 5
+#define Motor1_FPWM_Digital false
+#define Motor1_FRPM_Pin 6
 
-static int Motor1_RPWM = 5;
-static int Motor1_FRPM = 6;
-
-static int Motor2_RPWM = 9;
-static int Motor2_FRPM = 10;
+#define Motor2_RPWM_Digital false
+#define Motor2_RPWM_Pin 9
+#define Motor2_FPWM_Digital false
+#define Motor2_FRPM_Pin 10
 
 // Defult Build In LED On the MOST ARDUNO BOARD / ESP32
-static uint8_t ledPin = LED_BUILTIN;
+#define ledPin LED_BUILTIN
 
-// Gobal Static Values
+// Global Static Values
 static int commandDelayMs = 10;
 static int errorBitOutPut = 3;
 
-// Gobal Values
+// Global Values
 bool bufferString = false;
 String inputString = "";
 
+// Gobal Motor Speed
 int motor1S = 0;
 int motor2S = 0;
 
 void setup()
 {
 
-  // TODO: NEED CHECKING if the pinMode need or not
-  // Docment say that analogWrite does not need pinMode <-- Not Test
+  // TODO: NEED CHECKING if the pinMode is needed or not
+  // Document says that analogWrite does not need pinMode <-- Not Test
   // // Motor 1 setup ide
-  // pinMode(Motor1_RPWM, OUTPUT);
+  // pinMode(Motor1_RPWM_Pin, OUTPUT);
   // pinMode(Motor1_FRPM, OUTPUT);
 
   // // Motor 2 setup ide
@@ -90,17 +100,17 @@ void setup()
   // Defult LED pin setup ide
   pinMode(ledPin, OUTPUT);
 
-  Serial.begin(9600);
+  Serial.begin(Serial_Speed);
 
-  // if the Serial is not being connect to the other system that support the Serial
+  //If the Serial is not being connected to the other system that supports the Serial
   // Puse the command here
   while (!Serial)
   {
-    sErrorStatus("Serial have not been connect", 0);
+    sErrorStatus("Serial have not been connect", 1);
   }
 
-  // Once the Serial is connect to the other system that support the Serial
-  // loop the current status until First command have being send from the UART
+  // Once the Serial is connected to the other system that supports the Serial
+  // loop the current status until the First command has been send from the UART
   while (Serial.available() <= 0)
   {
     sSpeedInfo();
@@ -108,10 +118,10 @@ void setup()
   }
 }
 
-// While loop that will not be stop unless the Ardurino Board is crash
+// While loop that will not be stopped unless the Arduino Board is crash
 void loop()
 {
-  // If the bufferString is still in read or it was not finish, Puse the loop
+  // If the buffering is still in read or it was not finished, Puse the loop
   while (!bufferString)
   {
     sEventListerner();
@@ -122,71 +132,71 @@ void loop()
   {
     sSpeedInfo();
   }
-  // Gettng speed from the command "speed"
+  // Getting speed from the command "speed"
   else if (inputString.startsWith("speed"))
   {
     inputString.remove(0, 5);
     inputString.remove(inputString.length());
 
-    // Checking if the Motor speed and the select is in the digit format
-    // It can chekcing if the motor is in the negivte value
+    // Checking if the Motor speed and the select are in the digit format
+    // It can check if the motor is in the negative value
     if (isStringDigit(inputString))
     {
 
-      // Chekcing if the motor select is the Motor ID: 0
+      // Checking if the motor selected is the Motor ID: 0
       if (inputString.startsWith("0"))
       {
         inputString.remove(0, 1);
         unsigned long messageFromRBPI = strtoul(inputString.c_str(), NULL, 10);
         motor1S = messageFromRBPI;
 
-        // Motor 1 contorl speed from the RBPI to the setting the PWM signal
+        // Motor 1 control speed from the RBPI to the setting of the PWM signal
         // forward rotation
-        analogWrite(Motor1_RPWM, 0);
-        analogWrite(Motor1_FRPM, abs(motor1S));
+        analogWrite(Motor1_RPWM_Pin, 0);
+        analogWrite(Motor1_FRPM_Pin, abs(motor1S));
 
         // reverse rotation
         if (motor1S < 0)
         {
-          analogWrite(Motor1_FRPM, 0);
-          analogWrite(Motor1_RPWM, abs(motor1S));
+          analogWrite(Motor1_FRPM_Pin, 0);
+          analogWrite(Motor1_RPWM_Pin, abs(motor1S));
         }
       }
-      // Chekcing if the motor select is the Motor ID: 1
+      // Checking if the motor selected is the Motor ID: 1
       else if (inputString.startsWith("1"))
       {
         inputString.remove(0, 1);
         unsigned long messageFromRBPI = strtoul(inputString.c_str(), NULL, 10);
         motor2S = messageFromRBPI;
 
-        // Motor 2 contorl speed from the RBPI to the setting the PWM signal
+        // Motor 2 control speed from the RBPI to the setting of the PWM signal
         // forward rotation
-        analogWrite(Motor2_FRPM, 0);
-        analogWrite(Motor2_RPWM, abs(motor2S));
+        analogWrite(Motor2_FRPM_Pin, 0);
+        analogWrite(Motor2_RPWM_Pin, abs(motor2S));
 
         // reverse rotation
         if (motor2S < 0)
         {
-          analogWrite(Motor2_RPWM, 0);
-          analogWrite(Motor2_FRPM, abs(motor2S));
+          analogWrite(Motor2_RPWM_Pin, 0);
+          analogWrite(Motor2_FRPM_Pin, abs(motor2S));
         }
       }
       // If they are not both Return the ERROR
       else
       {
-        sErrorStatus("Speed Data Error:/n Can not select the Motor ID:" + inputString, 3);
+        sErrorStatus("Speed Data Error:/n - Can not select the Motor ID:" + inputString, 3);
       }
 
       // Return the current status of both motor
       sSpeedInfo();
     }
-    // If the motor inforamtion is not the digit after the word "speed" Return ERROR
+    // If the motor information is not the digit after the word "speed" Return ERROR
     else
     {
-      sErrorStatus("Speed Data Error: /n Motor is not in the digit format", 2);
+      sErrorStatus("Speed Data Error: /n - Motor is not in the digit format", 2);
     }
   }
-  // If the command is not else status or speed Return the ERROR invald command
+  // If the command is not else status or speed Return the ERROR invalid command
   else
   {
     sErrorStatus("Inviald Command", 2);
@@ -198,29 +208,29 @@ void loop()
   delay(commandDelayMs);
 }
 
-// TODO: Need adding the over led
+// TODO: Need to add the over led
 /**
- * Status Chekcing with the Building board LED flash once
+ * Status Checking with the Building board LED flash once
  * This will return the both motor current speed at the same time
- * They will return in this formart:
+ * They will return in this format:
  * Current Speed1: x%, 2: x%
- * Once the LEC flash once It mean the report have send back on the UART
+ * Once the LEC flashes once It means the report has been sent back to the UART
  */
 void sSpeedInfo()
 {
   char buffer[50];
   sprintf(buffer, "Current Speed 1: %d%%, 2: %d%%%", motor1S, motor2S);
-  sErrorStatus(buffer, 1);
+  sErrorStatus(buffer, 0);
 }
 
 /**
  * Listerner that Listern the UART from the Serial
- * Lister only lister the command that is send fro mthe Serial that In beingfarmat in the uart.
- * And they need to be in binery
- * Once the serial recived the command, It will cover they back to string form
- * They will be add into the inputString
- * And rest the bufferString to true
- * Just Listerner not judgement
+ * Lister only lister the command that is sent from the Serial that In being in the uart.
+ * And they need to be in binary
+ * Once the serial receives the command, It will cover they back-to-string form
+ * They will be added to the inputString
+ * And rest the buffering to true
+ * Just Listerner not judgment
  */
 void sEventListerner()
 {
@@ -235,8 +245,8 @@ void sEventListerner()
 }
 
 /**
- * Checking if the String is pure digit or else
- * If they are not pure digit it will return false
+ * Checking if the String is a pure digit or else
+ * If they are not pure digits it will return false
  * else return true
  */
 bool isStringDigit(String data)
@@ -256,11 +266,11 @@ bool isStringDigit(String data)
   return true;
 }
 
-// TODO: Need adding the over led
+// TODO: Need to add the over led
 /**
- * Report the error to the serial with message about the type of error is.
- * If the srial can not able to be read the method
- * Will making the led to be flash in the order of the type of the error is respond to.
+ * Report the error to the serial with a message about the type of error.
+ * If the serial can not able to be read the method
+ * Will make the led flash in the order of the type of error that is responded to.
  */
 void sErrorStatus(String message, int typeOfError)
 {
@@ -284,14 +294,14 @@ void sErrorStatus(String message, int typeOfError)
 
 /**
  * Convert the number in decimal to the binary
- * The conver maybe not be full 32bits It have been limited size of array
- * The size of the array is been set by the value errorBitOutPut
- * No Matter what the value will have a value 1 before all the value input start
- * This will be limit the num be 2^30
- * 
- * Example: 
- *  Input 3: output 1011
- * 
+ * The cover may not be full 32bits It has been a limited size of the array
+ * The size of the array has been set by the value errorBitOutPut
+ * No Matter what the value will have a value of  1 before all the value inputs start
+ * This will limit the num be 2^30
+ *
+ * Example:
+ *  Input 3: Output 1011
+ *
  */
 int decimalToBinary(int num)
 {
