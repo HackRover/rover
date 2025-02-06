@@ -29,9 +29,9 @@
  * speedXXXXX :
  * Setting a speed for one motor for the speed it needs to be resigned to
  * The examples for the speed type of command are:
- * speed0-100 - meaning that motor 1 set the speed to -100 % of the motor output in the reverse direction
+ * speed0-100 - meaning that motor 0 set the speed to -100 % of the motor output in the reverse direction
  *
- * speed112 - meaning that motor 2 sets the speed to 12 % of the motor output in the forward direction
+ * speed112 - meaning that motor 1 sets the speed to 12 % of the motor output in the forward direction
  *
  * Error Code:
  * 0 - Stand for the nothing that will be shown when the command is executed successfully
